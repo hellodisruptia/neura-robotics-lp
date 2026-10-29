@@ -1,0 +1,14 @@
+
+---
+import StoryblokComponent from "@storyblok/astro/StoryblokComponent.astro";
+
+const { blok } = Astro.props;
+---
+
+<div class="grid">
+  {
+    blok.columns?.map((nestedBlok) => (
+      <StoryblokComponent blok={nestedBlok} />
+    ))
+  }
+</div>
