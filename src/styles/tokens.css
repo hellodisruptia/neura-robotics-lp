@@ -1,0 +1,127 @@
+/* ==========================================================
+   Design tokens — relevés sur neura-robotics.com
+   Les composants n'utilisent QUE ces variables.
+   ========================================================== */
+:root {
+  /* ---------- Palette brute ---------- */
+  --color-black: #000000;
+  --color-gray-950: #101010;
+  --color-gray-800: #323232;
+  --color-gray-600: #59646a;
+  --color-gray-500: #4b5563;
+  --color-white: #ffffff;
+  --color-snow: #f5f7fb;
+
+  --color-cyan-400: #00b5d9;     /* cyan NEURA */
+  --color-cyan-500: #009bbb;     /* cyan survol */
+  --color-teal-700: #006d80;     /* fin du dégradé */
+  --color-navy-900: #0d233b;     /* "NEURA navy" */
+  --color-ink-900: #111827;
+  --color-ink-800: #1f2a44;
+
+  /* ---------- Rôles : thème sombre (par défaut) ---------- */
+  --color-bg: var(--color-black);
+  --color-surface: var(--color-gray-950);
+  --color-text: var(--color-snow);
+  --color-heading: var(--color-snow);
+  --color-text-muted: rgb(245 247 251 / 0.78);
+  --color-border: rgb(255 255 255 / 0.16);
+
+  --color-accent: var(--color-cyan-400);
+  --color-accent-hover: var(--color-cyan-500);
+  --color-on-accent: var(--color-navy-900);   /* contraste ≈ 6.5:1 */
+
+  --color-glass: rgb(50 50 50 / 0.5);
+  --color-glass-hover: rgb(50 50 50 / 0.3);
+  --color-glass-border: rgb(249 249 249 / 0.24);
+  --blur-glass: blur(30px);
+
+  --gradient-brand: linear-gradient(to right, var(--color-cyan-400), var(--color-teal-700));
+  --gradient-hero-overlay: linear-gradient(
+    to top,
+    rgb(0 0 0 / 0.85) 0%,
+    rgb(0 0 0 / 0.35) 55%,
+    rgb(0 0 0 / 0.1) 100%
+  );
+
+  /* ---------- Typographie ----------
+     NEURA utilise "Neue Haas Grotesk Display Pro" (licence payante).
+     Inter est un équivalent libre, auto-hébergé. */
+  --font-sans: "Inter Variable", "Helvetica Neue", Arial, sans-serif;
+  --font-heading: var(--font-sans);
+
+  --text-xs: 0.75rem;                                   /* 12px */
+  --text-sm: 0.875rem;                                  /* 14px */
+  --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); /* 16 → 18px */
+  --text-lg: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
+  --text-xl: clamp(1.5rem, 1.3rem + 0.8vw, 2rem);       /* 24 → 32px */
+  --text-2xl: clamp(2rem, 1.5rem + 2vw, 3rem);
+  --text-3xl: clamp(2.5rem, 1.6rem + 4vw, 5.5rem);
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  --leading-tight: 1.05;
+  --leading-heading: 1.15;
+  --leading-snug: 1.35;
+  --leading-normal: 1.55;
+
+  --tracking-tight: -0.02em;
+  --tracking-label: 0.04em;
+
+  /* ---------- Espacements ---------- */
+  --space-2xs: 0.25rem;  /* 4px  */
+  --space-xs: 0.5rem;    /* 8px  */
+  --space-sm: 1rem;      /* 16px */
+  --space-md: 1.5rem;    /* 24px */
+  --space-lg: 2.25rem;   /* 36px */
+  --space-xl: 4rem;      /* 64px */
+  --space-2xl: 6rem;     /* 96px */
+
+  /* ---------- Formes ---------- */
+  --radius-sm: 0.25rem;   /* 4px  */
+  --radius-md: 0.9375rem; /* 15px */
+  --radius-lg: 1.375rem;  /* 22px — cartes */
+  --radius-xl: 1.75rem;   /* 28px — médias */
+  --radius-pill: 999px;
+  --border-width: 1px;
+
+  --shadow-card: 0 10px 24px rgb(17 24 39 / 0.06);
+  --shadow-card-hover: 0 18px 34px rgb(17 24 39 / 0.1);
+
+  /* ---------- Mise en page ---------- */
+  --container-max: 90rem;  /* 1440px */
+  --measure: 46ch;         /* largeur max d'un texte */
+  --gutter: clamp(1rem, 5vw, 3rem);
+  --hero-min-height: min(92svh, 56rem);
+  --tap-target: 2.75rem;   /* 44px */
+  --icon-size: 3rem;        /* 48px */
+  --card-padding: var(--space-lg) var(--space-md);
+
+  /* ---------- Superpositions ---------- */
+  --z-below: -1;
+  --z-behind: -2;
+  --z-skip-link: 100;
+
+  /* ---------- Interaction ---------- */
+  --focus-ring: 2px solid var(--color-accent);
+  --focus-offset: 3px;
+  --transition: 250ms ease;
+  --lift: translateY(-4px);
+
+  /* Points de rupture (non utilisables en var() dans @media) :
+     mobile < 48em (768px) · tablette < 64em (1024px) · large ≥ 75em (1200px) */
+}
+
+/* ---------- Thème clair : ajouter class="theme-light" sur une section ---------- */
+.theme-light {
+  --color-bg: var(--color-white);
+  --color-surface: var(--color-snow);
+  --color-text: var(--color-ink-900);
+  --color-heading: var(--color-ink-800);
+  --color-text-muted: var(--color-gray-500);
+  --color-border: rgb(17 24 39 / 0.08);
+  --focus-ring: 2px solid var(--color-navy-900);
+}

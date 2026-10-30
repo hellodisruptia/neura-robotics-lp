@@ -1,0 +1,62 @@
+---
+import { storyblokEditable } from "@storyblok/astro";
+
+const { blok } = Astro.props;
+
+const file: string = blok.icon?.filename ?? "";
+const isResizable = /\.(jpe?g|png|webp)$/i.test(file); // les SVG restent tels quels
+const iconSrc = isResizable ? `${file}/m/96x96/filters:format(webp)` : file;
+---
+
+<li {...storyblokEditable(blok)} class="card">
+  {file && (
+    <img
+      class="card__icon"
+      src={iconSrc}
+      alt=""
+      width="48"
+      height="48"
+      loading="lazy"
+      decoding="async"
+    />
+  )}
+
+  <h3 class="card__title">{blok.title}</h3>
+
+  {blok.text && <p class="card__text">{blok.text}</p>}
+</li>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--card-padding);
+    border: var(--border-width) solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    transition:
+      transform var(--transition),
+      box-shadow var(--transition);
+  }
+
+  .card:hover {
+    transform: var(--lift);
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .card__icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    object-fit: contain;
+  }
+
+  .card__title {
+    font-size: var(--text-xl);
+  }
+
+  .card__text {
+    color: var(--color-text-muted);
+    line-height: var(--leading-normal);
+  }
+</style>

@@ -1,0 +1,104 @@
+---
+import { storyblokEditable } from "@storyblok/astro";
+import StoryblokComponent from "@storyblok/astro/StoryblokComponent.astro";
+
+const { blok } = Astro.props;
+
+// Sécurité : jamais plus de 6 cartes, même si le schéma change
+const items = (blok.items ?? []).slice(0, 6);
+const headingId = `features-${blok._uid}`;
+---
+
+<section
+  {...storyblokEditable(blok)}
+  class="features theme-light"
+  aria-labelledby={blok.title ? headingId : undefined}
+>
+  <div class="features__inner">
+    {(blok.title || blok.intro) && (
+      <header class="features__header">
+        {blok.title && (
+          <h2 id={headingId} class="features__title">{blok.title}</h2>
+        )}
+        {blok.intro && <p class="features__intro">{blok.intro}</p>}
+      </header>
+    )}
+
+    {items.length > 0 && (
+      <ul class="features__list" role="list">
+        {items.map((item) => <StoryblokComponent blok={item} />)}
+      </ul>
+    )}
+  </div>
+</section>
+
+<style>
+  .features {
+    padding-block: var(--space-2xl);
+    padding-inline: var(--gutter);
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  .features__inner {
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+    .features__header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    margin-block-end: var(--space-xl);
+  }
+
+  @media (min-width: 64em) {
+    .features__header {
+      flex-direction: row;
+      align-items: baseline;
+      gap: 10%;
+    }
+
+    .features__title {
+      width: 40%;
+      flex-shrink: 0;
+    }
+
+    .features__intro {
+      width: 50%;
+      text-align: left;
+      margin-inline-start: 0;
+    }
+  }
+
+  .features__title {
+    font-size: var(--text-2xl);
+    flex-shrink: 0;
+  }
+
+  .features__intro {
+    font-size: var(--text-lg);
+    line-height: var(--leading-snug);
+    color: var(--color-text-muted);
+    max-width: 50ch;
+  }
+
+  /* Mobile : 1 colonne · Tablette : 2 · Ordinateur : 3 */
+  .features__list {
+    display: grid;
+    gap: var(--space-md);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 48em) {
+    .features__list {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 64em) {
+    .features__list {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>

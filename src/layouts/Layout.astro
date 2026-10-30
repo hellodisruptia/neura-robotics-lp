@@ -1,6 +1,25 @@
-
 ---
-const { title = "Neura Robotics", lang = "en" } = Astro.props;
+import "@fontsource-variable/inter";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+  lang?: string;
+}
+
+const {
+  title = "NEURA Robotics",
+  description = "Cognitive robots by NEURA Robotics.",
+  lang = "en",
+} = Astro.props;
+
+// Textes de l'interface (hors Storyblok)
+const ui = {
+  en: { skip: "Skip to content" },
+  fr: { skip: "Aller au contenu" },
+};
+const t = ui[lang as keyof typeof ui] ?? ui.en;
 ---
 
 <!doctype html>
@@ -8,10 +27,15 @@ const { title = "Neura Robotics", lang = "en" } = Astro.props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#000000" />
     <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <title>{title}</title>
   </head>
   <body>
+    <a class="skip-link" href="#main">{t.skip}</a>
     <slot />
   </body>
 </html>

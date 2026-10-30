@@ -1,15 +1,9 @@
-
 import { defineConfig } from "astro/config";
 import { storyblok } from "@storyblok/astro";
 import { loadEnv } from "vite";
 import mkcert from "vite-plugin-mkcert";
 
 const env = loadEnv("", process.cwd(), "STORYBLOK");
-const { STORYBLOK_DELIVERY_API_TOKEN } = loadEnv(
-  import.meta.env.MODE,
-  process.cwd(),
-  ""
-);
 
 export default defineConfig({
   integrations: [
@@ -20,9 +14,9 @@ export default defineConfig({
       },
       components: {
         page: "storyblok/Page",
-        grid: "storyblok/Grid",
-        feature: "storyblok/Feature",
-        teaser: "storyblok/Teaser",
+        hero: "storyblok/Hero",
+        feature_grid: "storyblok/FeatureGrid",
+        feature_card: "storyblok/FeatureCard",
       },
     }),
   ],
