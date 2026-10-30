@@ -1,0 +1,184 @@
+
+---
+import { storyblokEditable } from "@storyblok/astro";
+
+const { blok } = Astro.props;
+
+// Lien du bouton
+const link = blok.button_link;
+let href = "";
+
+if (link?.linktype === "story") {
+  const url = link.cached_url ?? "";
+  href = url.startsWith("/") ? url : `/${url}`;
+} else if (link?.linktype === "email" && link.email) {
+  href = `mailto:${link.email}`;
+} else {
+  href = link?.url || link?.cached_url || "";
+}
+
+const isExternal = /^https?:\/\//i.test(href);
+
+// Image de fond
+const image = blok.image?.filename ?? "";
+---
+
+<section class="cta-section theme-light">
+  <div
+    {...storyblokEditable(blok)}
+    class="cta-banner"
+  >
+    {image && (
+      <img
+        class="cta-banner__image"
+        src={image}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        decoding="async"
+      />
+    )}
+
+    <div class="cta-banner__overlay" aria-hidden="true"></div>
+
+    <div class="cta-banner__content">
+      <div class="cta-banner__text">
+        {blok.title && (
+          <h2 class="cta-banner__title">
+            {blok.title}
+          </h2>
+        )}
+
+        {blok.description && (
+          <p class="cta-banner__description">
+            {blok.description}
+          </p>
+        )}
+
+        {blok.button_label && href && (
+          <a
+            class="cta-banner__button"
+            href={href}
+            {...(isExternal
+              ? { target: "_blank", rel: "noopener noreferrer" }
+              : {})}
+          >
+            {blok.button_label}
+            <span aria-hidden="true">→</span>
+          </a>
+        )}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Section extérieure */
+  .cta-section {
+    width: 100%;
+    padding-block: var(--space-2xl);
+    padding-inline: var(--gutter);
+    background: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  /* Grand conteneur avec image */
+  .cta-banner {
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: var(--container-max);
+    min-width: 0;
+    margin-inline: auto;
+    padding-block: var(--space-2xl);
+    padding-inline: var(--gutter);
+    overflow: hidden;
+    border-radius: var(--radius-xl);
+    background: var(--color-surface);
+    color: var(--color-text);
+  }
+
+  .cta-banner__image {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cta-banner__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--color-black);
+    opacity: 0.55;
+  }
+
+  .cta-banner__content {
+    position: relative;
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+  .cta-banner__text {
+    width: 100%;
+  }
+
+  .cta-banner__title {
+    max-width: 18ch;
+    margin: 0;
+    font-family: var(--font-heading);
+    font-size: var(--text-2xl);
+    font-weight: var(--weight-medium);
+    line-height: var(--leading-tight);
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-white);
+  }
+
+  .cta-banner__description {
+    max-width: var(--measure);
+    margin-block-start: var(--space-sm);
+    font-size: var(--text-base);
+    line-height: var(--leading-snug);
+    color: var(--color-white);
+  }
+
+  .cta-banner__button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-xs);
+    min-height: var(--tap-target);
+    margin-block-start: var(--space-md);
+    padding-inline: var(--space-md);
+    border: var(--border-width) solid var(--color-glass-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-glass);
+    backdrop-filter: var(--blur-glass);
+    -webkit-backdrop-filter: var(--blur-glass);
+    color: var(--color-white);
+    font-size: var(--text-base);
+    font-weight: var(--weight-medium);
+    text-decoration: none;
+    transition: background var(--transition);
+  }
+
+  .cta-banner__button:hover {
+    background: var(--color-glass-hover);
+  }
+
+  .cta-banner__button:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-offset);
+  }
+
+  /* Écrans supérieurs à la tablette */
+  @media (min-width: 64em) {
+    .cta-banner__text {
+      width: 40%;
+    }
+  }
+</style>

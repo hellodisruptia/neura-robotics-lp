@@ -1,0 +1,94 @@
+
+---
+import { storyblokEditable } from "@storyblok/astro";
+import StoryblokComponent from "@storyblok/astro/StoryblokComponent.astro";
+
+const { blok } = Astro.props;
+
+const headers = blok.headers ?? [];
+const rows = blok.rows ?? [];
+---
+
+<div {...storyblokEditable(blok)} class="spec-table theme-light">
+  {blok.title && <h2 class="spec-table__title">{blok.title}</h2>}
+
+  <div class="spec-table__wrapper">
+    <table class="spec-table__table">
+      {headers.length > 0 && (
+        <thead>
+          <tr>
+            {headers.map((header) => (
+              <th {...storyblokEditable(header)} scope="col">
+                {header.label}
+              </th>
+            ))}
+          </tr>
+        </thead>
+      )}
+
+      <tbody>
+        {rows.map((row) => (
+          <tr {...storyblokEditable(row)}>
+            {row.cells?.map((cell) => (
+              <td {...storyblokEditable(cell)}>
+                {cell.value}
+              </td>
+            ))}
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  .spec-table {
+    padding-block: var(--space-2xl);
+    padding-inline: var(--gutter);
+    background: var(--color-surface);
+    color: var(--color-text);
+    min-width: 0;
+  }
+
+  .spec-table__title {
+    font-size: var(--text-2xl);
+    margin-block-end: var(--space-xl);
+  }
+
+  .spec-table__wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .spec-table__table {
+    width: 100%;
+    min-width: max-content;
+    border-collapse: collapse;
+  }
+
+  .spec-table th,
+  .spec-table td {
+    padding: var(--space-sm) var(--space-md);
+    text-align: left;
+    white-space: nowrap;
+    border-bottom: var(--border-width) solid var(--color-border);
+    font-size: var(--text-base);
+    line-height: var(--leading-normal);
+  }
+
+  .spec-table th {
+    color: var(--color-text-muted);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    font-size: var(--text-sm);
+  }
+
+  .spec-table td {
+    font-weight: var(--weight-medium);
+  }
+</style>
