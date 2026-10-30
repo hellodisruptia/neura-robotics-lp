@@ -6,6 +6,11 @@ const { blok } = Astro.props;
 
 const logo = blok.logo?.filename ?? "";
 const logoAlt = blok.logo?.alt ?? "Logo";
+
+const logoLink =
+  blok.logo_link?.cached_url ||
+  blok.logo_link?.url ||
+  "";
 ---
 
 <footer {...storyblokEditable(blok)} class="site-footer">
@@ -13,12 +18,27 @@ const logoAlt = blok.logo?.alt ?? "Logo";
     <span>Made by</span>
 
     {logo && (
-      <img
-        class="site-footer__logo"
-        src={logo}
-        alt={logoAlt}
-        loading="lazy"
-      />
+      logoLink ? (
+        <a
+          class="site-footer__link"
+          href={logoLink}
+          aria-label={logoAlt}
+        >
+          <img
+            class="site-footer__logo"
+            src={logo}
+            alt={logoAlt}
+            loading="lazy"
+          />
+        </a>
+      ) : (
+        <img
+          class="site-footer__logo"
+          src={logo}
+          alt={logoAlt}
+          loading="lazy"
+        />
+      )
     )}
 
     <span>with 🤍</span>
@@ -44,6 +64,11 @@ const logoAlt = blok.logo?.alt ?? "Logo";
     font-family: var(--font-sans);
     font-size: var(--text-sm);
     font-weight: var(--weight-medium);
+  }
+
+  .site-footer__link {
+    display: inline-flex;
+    align-items: center;
   }
 
   .site-footer__logo {
