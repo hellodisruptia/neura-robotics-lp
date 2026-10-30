@@ -1,0 +1,56 @@
+
+---
+import { storyblokEditable } from "@storyblok/astro";
+
+const { blok } = Astro.props;
+
+const logo = blok.logo?.filename ?? "";
+const logoAlt = blok.logo?.alt ?? "Logo";
+---
+
+<footer {...storyblokEditable(blok)} class="site-footer">
+  <div class="site-footer__content">
+    <span>Made by</span>
+
+    {logo && (
+      <img
+        class="site-footer__logo"
+        src={logo}
+        alt={logoAlt}
+        loading="lazy"
+      />
+    )}
+
+    <span>with 🤍</span>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    width: 100%;
+    padding: var(--space-sm) var(--gutter);
+    background: var(--color-gray-950);
+    color: var(--color-white);
+  }
+
+  .site-footer__content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    max-width: var(--container-max);
+    margin-inline: auto;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+  }
+
+  .site-footer__logo {
+    display: block;
+    width: auto;
+    max-width: calc(var(--icon-size-footer) * 2);
+    height: var(--icon-size-footer);
+    object-fit: contain;
+  }
+</style>

@@ -1,7 +1,6 @@
 
 ---
 import { storyblokEditable } from "@storyblok/astro";
-import StoryblokComponent from "@storyblok/astro/StoryblokComponent.astro";
 
 const { blok } = Astro.props;
 
@@ -9,44 +8,53 @@ const headers = blok.headers ?? [];
 const rows = blok.rows ?? [];
 ---
 
-<div {...storyblokEditable(blok)} class="spec-table theme-light">
-  {blok.title && <h2 class="spec-table__title">{blok.title}</h2>}
+<section class="spec-table-section theme-light">
+  <div {...storyblokEditable(blok)} class="spec-table">
+    {blok.title && <h2 class="spec-table__title">{blok.title}</h2>}
 
-  <div class="spec-table__wrapper">
-    <table class="spec-table__table">
-      {headers.length > 0 && (
-        <thead>
-          <tr>
-            {headers.map((header) => (
-              <th {...storyblokEditable(header)} scope="col">
-                {header.label}
-              </th>
-            ))}
-          </tr>
-        </thead>
-      )}
+    <div class="spec-table__wrapper">
+      <table class="spec-table__table">
+        {headers.length > 0 && (
+          <thead>
+            <tr>
+              {headers.map((header) => (
+                <th {...storyblokEditable(header)} scope="col">
+                  {header.label}
+                </th>
+              ))}
+            </tr>
+          </thead>
+        )}
 
-      <tbody>
-        {rows.map((row) => (
-          <tr {...storyblokEditable(row)}>
-            {row.cells?.map((cell) => (
-              <td {...storyblokEditable(cell)}>
-                {cell.value}
-              </td>
-            ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+        <tbody>
+          {rows.map((row) => (
+            <tr {...storyblokEditable(row)}>
+              {row.cells?.map((cell) => (
+                <td {...storyblokEditable(cell)}>
+                  {cell.value}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
+</section>
 
 <style>
-  .spec-table {
-    padding-block: var(--space-2xl);
+  .spec-table-section {
+    width: 100%;
     padding-inline: var(--gutter);
+    padding-block: var(--space-2xl);
     background: var(--color-surface);
     color: var(--color-text);
+  }
+
+  .spec-table {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
     min-width: 0;
   }
 

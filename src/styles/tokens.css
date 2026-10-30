@@ -98,6 +98,7 @@
   --hero-min-height: min(92svh, 56rem);
   --tap-target: 2.75rem;   /* 44px */
   --icon-size: 3rem;        /* 48px */
+  --icon-size-footer: 2rem;        /* 48px */
   --card-padding: var(--space-lg) var(--space-md);
 
   /* ---------- Superpositions ---------- */

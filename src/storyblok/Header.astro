@@ -1,0 +1,214 @@
+
+---
+import { storyblokEditable } from "@storyblok/astro";
+
+const { blok } = Astro.props;
+
+// Logo
+const logo = blok.logo?.filename ?? "";
+const logoAlt = blok.logo?.alt ?? "Neura Robotics";
+
+// Liens des langues
+const getHref = (link: any) => {
+  if (!link) return "";
+
+  if (link.linktype === "story") {
+    const url = link.cached_url ?? "";
+    return url.startsWith("/") ? url : `/${url}`;
+  }
+
+  if (link.linktype === "email" && link.email) {
+    return `mailto:${link.email}`;
+  }
+
+  return link.url || link.cached_url || "";
+};
+
+const frHref = getHref(blok.fr_link);
+const enHref = getHref(blok.en_link);
+
+const isExternal = (href: string) => /^https?:\/\//i.test(href);
+---
+
+<header
+  {...storyblokEditable(blok)}
+  class="site-header"
+  data-site-header
+>
+  <div class="site-header__inner">
+
+    <!-- Logo -->
+    <a class="site-header__logo" href={enHref || "/"}>
+      {logo && (
+        <img
+          src={logo}
+          alt={logoAlt}
+          width="180"
+          height="48"
+          decoding="async"
+        />
+      )}
+    </a>
+
+    <!-- Sélecteur de langue -->
+    <nav class="site-header__languages" aria-label="Language selection">
+
+      {frHref && (
+        <a
+          href={frHref}
+          lang="fr"
+          {...(isExternal(frHref)
+            ? { target: "_blank", rel: "noopener noreferrer" }
+            : {})}
+        >
+          FR
+        </a>
+      )}
+
+      <span aria-hidden="true">/</span>
+
+      {enHref && (
+        <a
+          href={enHref}
+          lang="en"
+          {...(isExternal(enHref)
+            ? { target: "_blank", rel: "noopener noreferrer" }
+            : {})}
+        >
+          EN
+        </a>
+      )}
+
+    </nav>
+
+  </div>
+</header>
+
+<script>
+  const headers = document.querySelectorAll<HTMLElement>(
+    "[data-site-header]"
+  );
+
+  headers.forEach((header) => {
+    const updateHeader = () => {
+      header.classList.toggle("is-scrolled", window.scrollY > 20);
+    };
+
+    updateHeader();
+
+    window.addEventListener("scroll", updateHeader, {
+      passive: true,
+    });
+  });
+</script>
+
+<style>
+  /* Header fixe */
+  .site-header {
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    z-index: var(--z-skip-link);
+    width: calc(100% - (var(--gutter) * 2));
+    max-width: var(--container-max);
+    transform: translateX(-50%);
+    transition: top var(--transition);
+    pointer-events: none;
+  }
+
+  /* Conteneur intérieur */
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: var(--tap-target);
+    padding: var(--space-xs) var(--space-md);
+    border: var(--border-width) solid var(--color-glass-border);
+    border-radius: var(--radius-xl);
+    background: var(--color-glass);
+    backdrop-filter: var(--blur-glass);
+    -webkit-backdrop-filter: var(--blur-glass);
+    color: var(--color-text);
+    transition:
+      background var(--transition),
+      box-shadow var(--transition);
+    pointer-events: auto;
+  }
+
+  /* Position après le scroll */
+  .site-header.is-scrolled {
+    top: 10px;
+  }
+
+  .site-header.is-scrolled .site-header__inner {
+    box-shadow: var(--shadow-card);
+  }
+
+  /* Logo */
+  .site-header__logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .site-header__logo img {
+    display: block;
+    width: auto;
+    max-width: 180px;
+    height: var(--icon-size);
+    object-fit: contain;
+  }
+
+  /* Langues */
+  .site-header__languages {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: var(--weight-medium);
+    letter-spacing: var(--tracking-label);
+  }
+
+  .site-header__languages a {
+    padding: var(--space-xs);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color var(--transition);
+  }
+
+  .site-header__languages a:hover {
+    color: var(--color-accent);
+  }
+
+  .site-header__languages a:focus-visible,
+  .site-header__logo:focus-visible {
+    outline: var(--focus-ring);
+    outline-offset: var(--focus-offset);
+    border-radius: var(--radius-sm);
+  }
+
+  .site-header__languages span {
+    color: var(--color-text-muted);
+  }
+
+  /* Mobile */
+  @media (max-width: 48em) {
+    .site-header__inner {
+      padding: var(--space-xs) var(--space-sm);
+    }
+
+    .site-header__logo img {
+      max-width: 140px;
+      height: var(--icon-size);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header,
+    .site-header__inner,
+    .site-header__languages a {
+      transition: none;
+    }
+  }
+</style>

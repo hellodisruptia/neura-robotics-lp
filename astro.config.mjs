@@ -22,6 +22,8 @@ export default defineConfig({
         spec_row: "storyblok/SpecTable",
         spec_cell: "storyblok/SpecTable",
         cta_banner: "storyblok/CtaBanner",
+        header: "storyblok/Header",
+        footer: "storyblok/Footer",
       },
     }),
   ],
